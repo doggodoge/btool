@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"sync"
 
 	"github.com/doggodoge/btool/compress"
@@ -28,15 +29,18 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
+				fmt.Printf("decompressed %s\n", path)
 			}(path)
 		} else {
 			go func(path string) {
 				defer wg.Done()
 
+				fmt.Printf("compressing %s\n", path)
 				err := compress.File(path)
 				if err != nil {
 					panic(err)
 				}
+				fmt.Printf("finished %s\n", path)
 			}(path)
 		}
 	}

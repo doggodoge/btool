@@ -7,7 +7,7 @@ import (
 )
 
 func tar(path string) error {
-	cmd := exec.Command("tar", "-c", fmt.Sprintf("%s.tar", path), path)
+	cmd := exec.Command("tar", "-c", "-f", fmt.Sprintf("%s.tar", path), path)
 	err := cmd.Run()
 	if err != nil {
 		return err
