@@ -39,3 +39,26 @@ func File(path string) error {
 	}
 	return nil
 }
+
+func FilesToTar(archiveName string, paths []string) error {
+	cmdOptions := []string{"-c", "-f", archiveName}
+	var tarPaths []string
+	for _, p := range paths {
+		tarPaths = append(tarPaths, fmt.Sprintf("%s.tar.br", p))
+	}
+	cmdOptions = append(cmdOptions, tarPaths...)
+	cmd := exec.Command("tar", cmdOptions...)
+	if err := cmd.Run(); err != nil {
+		fmt.Println("failed to run create tar command")
+		return err
+	}
+	for _, p := range tarPaths {
+		err := os.Remove(p)
+		if err != nil {
+			fmt.Printf("failed to remove file %s\n", p)
+			return err
+		}
+		fmt.Printf("removed %s\n", p)
+	}
+	return nil
+}
