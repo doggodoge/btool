@@ -40,18 +40,25 @@ func File(path string) error {
 	return nil
 }
 
-func FilesToTar(archiveName string, paths []string) error {
-	cmdOptions := []string{"-c", "-f", archiveName}
-	var tarPaths []string
+func appendExtension(paths []string, extension string) []string {
+	var ext []string
 	for _, p := range paths {
-		tarPaths = append(tarPaths, fmt.Sprintf("%s.tar.br", p))
+		ext = append(ext, fmt.Sprintf("%s%s", p, extension))
 	}
+	return ext
+}
+
+func FilesToTar(archiveName string, paths []string) error {
+	tarPaths := appendExtension(paths, ".tar.br")
+	cmdOptions := []string{"-c", "-f", archiveName}
 	cmdOptions = append(cmdOptions, tarPaths...)
+
 	cmd := exec.Command("tar", cmdOptions...)
 	if err := cmd.Run(); err != nil {
 		fmt.Println("failed to run create tar command")
 		return err
 	}
+
 	for _, p := range tarPaths {
 		err := os.Remove(p)
 		if err != nil {
@@ -60,5 +67,6 @@ func FilesToTar(archiveName string, paths []string) error {
 		}
 		fmt.Printf("removed %s\n", p)
 	}
+	
 	return nil
 }
