@@ -1,4 +1,6 @@
-# btool ⚙️
+Archived on GitHub and moved to https://git.sr.ht/~gary_moore/btool
+
+    # btool ⚙️
 
 This is a simple tool to automate compressing and decompressing `.tar.br` files
 concurrently. The `tar` command doesn't seem to have support for this, so I
